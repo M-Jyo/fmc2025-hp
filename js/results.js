@@ -26,8 +26,8 @@ var PLAYER_NULL = PLAYER_DIR + 'player_00.png';  // 仮画像（番号付き画�
 var DEFAULT_NAME = '選手名';
 var DEFAULT_TEXT = 'ここに紹介文が入ります';
 
-// 選手名・各競技の順位・総合スコア・予選順位は data/yosen.csv から読み込む
-// （tools/convert_yosen.py で js/players-data.js に変換）。
+// 選手名・各競技の順位・総合スコア・予選順位は _backup/data/yosen.csv から読み込む
+// （_backup/tools/convert_yosen.py で js/players-data.js に変換）。
 // 下の PLAYERS には、CSVに無い項目（画像内1行目の紹介文 text）だけを書けばよい。
 // 予選会のエリア名（スコア表示の並び順）
 var SCORE_AREAS = ['エンドレスステップス', 'スプリントターン', 'ロープクライム'];
