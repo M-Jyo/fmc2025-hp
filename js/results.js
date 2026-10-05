@@ -96,4 +96,27 @@ var PLAYERS = {
     li.tabIndex = 0;  // キーボード・タップでも選択できるようにする
     grid.appendChild(li);
   }
+
+  // ---- スクロールに合わせた表示 ----
+  // 行が画面に入ったら、その行の選手を左から1人ずつ順に表示する。
+  // 一度表示した選手は、上にスクロールして戻っても消さない。
+  var COLS = 5;            // 1行の人数
+  var STEP_MS = 140;       // 1人ごとの表示の間隔（ミリ秒）
+  var cards = grid.children;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!('IntersectionObserver' in window) || reduce) return;   // 対応していない環境では最初から全員表示
+  grid.classList.add('reveal-on');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var first = e.target, start = Array.prototype.indexOf.call(cards, first);
+      io.unobserve(first);                                       // この行は二度と判定しない
+      for (var c = 0; c < COLS && start + c < cards.length; c++) {
+        (function (card, delay) {
+          setTimeout(function () { card.classList.add('is-shown'); }, delay);
+        })(cards[start + c], c * STEP_MS);
+      }
+    });
+  }, { rootMargin: '0px 0px -12% 0px' });
+  for (var r = 0; r < cards.length; r += COLS) io.observe(cards[r]);   // 各行の先頭の選手を目印にする
 })();

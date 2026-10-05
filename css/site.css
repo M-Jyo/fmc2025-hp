@@ -289,3 +289,7 @@ a:focus-visible, .player-card:focus-visible {outline: 3px solid var(--sub); outl
 .catch-lg {font-size: 1.111em;}                 /* 0.9 × 1.111 ＝ 100% */
 .catch-sub {display: block; margin-top: .15em; font-size: .75em;}
 .catch-em {font-size: 1.25em;}                  /* 「希望」の大きさ（2行目に対する倍率） */
+
+/* 結果一覧：スクロールに合わせて1人ずつ表示（js/results.js が reveal-on / is-shown を付ける） */
+.player-grid.reveal-on .player-card {opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease;}
+.player-grid.reveal-on .player-card.is-shown {opacity: 1; transform: none;}
