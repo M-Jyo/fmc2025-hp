@@ -336,18 +336,21 @@ body {font-weight: 500;}                        /* 本文を一段階だけ太�
 .admin-group .admin-body h3 {margin: 0 0 .35rem;}
 @media screen and (max-width: 800px) {.admin-groups {grid-template-columns: 1fr; gap: 2rem;}}
 
-/* お問い合わせ欄：公式アカウントの埋め込み（左＝赤 YouTube／右＝青 X） */
-.sns-grid {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; align-items: start; margin-top: 1.8rem;}
-.sns-card {background: var(--bg); border: 1px solid var(--line);}
-.sns-head {margin: 0; padding: .6rem 1rem; color: #fff; text-align: center; font-size: 1.05rem; font-weight: 800; letter-spacing: .08em;}
-.sns-card.is-red .sns-head {background: var(--main);}
-.sns-card.is-blue .sns-head {background: var(--sub);}
-.sns-card.is-red {border-top: 0; border-bottom: 4px solid var(--main);}
-.sns-card.is-blue {border-top: 0; border-bottom: 4px solid var(--sub);}
-.sns-embed {position: relative; margin: 1rem; min-height: 200px;}
-.sns-youtube {aspect-ratio: 16 / 9; min-height: 0; background: #000;}
-.sns-youtube iframe {position: absolute; inset: 0; width: 100%; height: 100%; border: 0;}
-.sns-x {max-height: 360px; overflow: auto;}
-.sns-embed.is-empty {display: grid; place-items: center; aspect-ratio: 16 / 9; min-height: 0; background: var(--soft); color: var(--muted); font-size: .85rem; font-weight: 600;}
-.sns-card .sns-link {display: block; margin: 0 1rem 1rem; text-align: center;}
-@media screen and (max-width: 800px) {.sns-grid {grid-template-columns: 1fr;}}
+/* お問い合わせ欄：公式アカウント（左＝赤 YouTube／右＝青 X）。動画とロゴは同じ高さで横に並ぶ */
+.sns-grid {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; margin-top: 1.8rem;}
+.sns-box {display: flex; flex-direction: column; padding: 1.2rem; background: var(--bg); border: 2px solid; border-top-width: 8px;}
+.sns-box.is-red {border-color: var(--main);}
+.sns-box.is-blue {border-color: var(--sub);}
+.sns-box h3 {margin: 0 0 .3rem; font-size: 1.15rem;}
+.sns-box.is-red h3, .sns-box.is-red .sns-link {color: var(--main);}
+.sns-box.is-blue h3, .sns-box.is-blue .sns-link {color: var(--sub);}
+.sns-box p {margin: 0 0 .9rem; font-size: .88rem; min-height: 3.2em;}
+.sns-media {position: relative; aspect-ratio: 16 / 9; background: #000;}
+.sns-media iframe {position: absolute; inset: 0; width: 100%; height: 100%; border: 0;}
+.sns-media.is-logo {display: grid; place-items: center; background: var(--soft);}
+.sns-media.is-logo img {max-width: 70%; max-height: 80%; object-fit: contain;}
+.sns-link {margin-top: .7rem; font-size: .85rem; font-weight: 700;}
+@media screen and (max-width: 700px) {.sns-grid {grid-template-columns: 1fr;} .sns-box p {min-height: 0;}}
+/* お問い合わせ欄のロゴ：高さを動画の埋め込みと同じにし、左右はボックスの中央に置く */
+.sns-media.is-logo {display: flex; justify-content: center; align-items: center;}
+.sns-media.is-logo img {height: 100%; width: auto; max-width: 100%; max-height: none; object-fit: contain;}
