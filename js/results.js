@@ -69,7 +69,7 @@ var PLAYERS = {
     img.onerror = function () { this.onerror = null; this.src = PLAYER_NULL; };
     img.src = PLAYER_DIR + 'player_' + no + '.png';  // ゼッケン番号（zekken_no）と同じ番号の画像
     var cap = el('div', 'player-caption');
-    cap.appendChild(el('p', 'player-text', p.text || DEFAULT_TEXT));
+    cap.appendChild(el('p', 'player-text', p.text != null ? (p.text || '\u00a0') : DEFAULT_TEXT));  // 肩書き（空欄の選手は空行）
     cap.appendChild(el('p', 'player-name', name));
     photo.appendChild(img);
     photo.appendChild(cap);
@@ -78,9 +78,10 @@ var PLAYERS = {
 
     // スコア表示（フォーカス時に出るパネル）
     var has = function (v) { return v !== undefined && v !== null && v !== ''; };
-    var fmt = function (v) { return typeof v === 'number' ? v + '位' : String(v); };  // 数値は順位として表示
+    var fmt = function (v) { return String(v); };
     var panel = el('div', 'player-score');
     panel.appendChild(el('p', 'score-head', 'No.' + no + ' ' + name));
+    if (p.text) panel.appendChild(el('p', 'score-title', p.text));  // 肩書き
     var ol = el('ol', 'score-list');
     for (var i = 0; i < SCORE_AREAS.length; i++) {
       var row = el('li', '');
@@ -90,7 +91,7 @@ var PLAYERS = {
     }
     panel.appendChild(ol);
     panel.appendChild(el('p', 'score-total', '総合スコア：' + (has(p.total) ? p.total : '-')));
-    panel.appendChild(el('p', 'score-rank', '予選順位：' + (has(p.rank) ? p.rank + '位' : '-')));
+    if (has(p.rank)) panel.appendChild(el('p', 'score-rank', '予選順位：' + p.rank + '位'));  // 順位のデータがあるときだけ表示
     li.appendChild(panel);
     li.tabIndex = 0;  // キーボード・タップでも選択できるようにする
     grid.appendChild(li);

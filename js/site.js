@@ -1,4 +1,4 @@
-/* スライドショー（images フォルダ直下の画像を、ファイル名順に切り替える） */
+/* スライドショー（images/top フォルダの画像を、ファイル名順に切り替える） */
 (function () {
   var hero = document.querySelector('.hero');
   if (!hero) return;

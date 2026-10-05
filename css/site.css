@@ -211,3 +211,81 @@ a.stage-trigger:hover, .stage-trigger.is-current {border-color: var(--main);}
 .results-locked {margin: 2rem 0 !important; padding: 3rem 1rem; background: var(--soft); border: 2px dashed #9aa3ad; color: #6b7480; text-align: center; font-size: 1.4rem; font-weight: 800; letter-spacing: .2em;}
 .is-locked {text-align: center;}
 .lock-note {display: block; margin-top: .1rem; font-size: .62em; font-weight: 700; letter-spacing: .15em; line-height: 1.3; text-align: center;}
+
+/* 開催期間の注釈 */
+.info-note {margin-top: .6rem !important; color: var(--muted); font-size: .75rem;}
+
+/* 制作チーム紹介（admins.html） */
+.admin-list {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; list-style: none; margin: 2rem 0 1rem; padding: 0;}
+.admin-card {display: flex; gap: 1.2rem; align-items: flex-start; padding: 1.3rem; background: var(--soft); border-top: 4px solid var(--main);}
+.admin-card:nth-child(even) {border-top-color: var(--sub);}
+.admin-photo {flex: none; display: grid; place-items: center; width: 96px; height: 96px; object-fit: cover; background: var(--sub); color: #fff; font-size: 2.2rem; font-weight: 800;}
+.admin-body {min-width: 0;}
+.admin-role {color: var(--main); font-size: .75rem; font-weight: 700; letter-spacing: .04em; line-height: 1.5;}
+.admin-body h3 {margin: .2rem 0 .5rem; font-size: 1.3rem; line-height: 1.4;}
+.admin-text {margin: 0 !important; color: var(--muted); font-size: .88rem;}
+@media screen and (max-width: 800px) {.admin-list {grid-template-columns: 1fr;} .admin-photo {width: 72px; height: 72px; font-size: 1.6rem;}}
+.admin-x {margin-top: .5rem !important; font-size: .82rem; font-weight: 700;}
+
+/* ============================================================
+   全体の文字サイズ・細部の調整（2026-10-05）
+   ============================================================ */
+/* 本文：折り返しと行間 */
+body {font-size: 16px; line-height: 1.85; line-break: strict; overflow-wrap: anywhere; overflow-x: clip; -webkit-font-smoothing: antialiased;}
+/* 見出し・ボタン類：文節の途中で折り返さない／字間を詰める */
+h1, h2, h3, h4, .button, .jump a, .admin-role, .section-label, .stage-guide, .video-link {word-break: auto-phrase; font-feature-settings: "palt";}
+.section h2 {font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 1.6rem;}
+.section-label {font-size: .7rem;}
+.sub-head {font-size: 1.1rem; line-height: 1.5;}
+/* 枠内の本文は灰色をやめて読みやすく */
+.about-item p {color: var(--text); font-size: .95rem; line-height: 1.85;}
+.about-item h3 {font-size: 1.3rem;}
+.event-list p {font-size: .9rem; line-height: 1.8;}
+.event-list h4 {font-size: 1.15rem;}
+.notes {font-size: .88rem; line-height: 1.8;}
+.info th, .info td {font-size: .95rem; line-height: 1.7;}
+.info-note, .video-note {font-size: .78rem;}
+.pack-table {font-size: .86rem;}
+.site-footer {font-size: .78rem; letter-spacing: .04em;}
+/* リンク・キーボード操作時の見え方 */
+a:hover {text-decoration-thickness: 2px;}
+a:focus-visible, .player-card:focus-visible {outline: 3px solid var(--sub); outline-offset: 2px;}
+.jump a {font-size: .85rem; letter-spacing: .02em;}
+/* ステージバー：メインページとエリア紹介ページで文字の大きさをそろえる */
+.stage-list .stage-trigger {min-height: 130px;}
+.stage-list .stage-trigger h3 {margin: 0; font-size: clamp(1.25rem, 2.8vw, 2.1rem); letter-spacing: .08em; line-height: 1.2; white-space: nowrap;}
+.stage-lock {flex: none;}
+/* 結果一覧のスコアパネル内の肩書き */
+.score-title {margin: -.2rem 0 .4rem !important; color: var(--muted); font-size: .75rem; line-height: 1.5;}
+
+@media screen and (max-width: 700px) {
+	body {font-size: 15px;}
+	.section h2 {font-size: 1.45rem;}
+	.jump a {padding: .7rem .6rem; font-size: .8rem;}
+	/* 表（開催期間・制作スタッフ）：見出しと内容を縦に並べ、横にはみ出さない */
+	.info, .info tbody, .info tr, .info th, .info td {display: block; width: auto;}
+	.info tr {padding: .7rem 0; border-bottom: 1px solid var(--line);}
+	.info th, .info td {padding: 0; border: 0; white-space: normal;}
+	.info th {margin-bottom: .15rem; font-size: .82rem;}
+	/* ステージバー */
+	.stage-list .stage-trigger {min-height: 96px; padding: .9rem 1rem;}
+	.stage-list .stage-trigger h3 {font-size: 1.15rem; letter-spacing: .05em;}
+	.stage-lock {font-size: .55rem; padding: .2rem .4rem; letter-spacing: .1em;}
+	/* 結果一覧：小さい画面では肩書きを画像から外し、選手名だけ表示（肩書きはタップで開くパネルに表示） */
+	.player-text {display: none;}
+	.player-caption {padding: 1em .25em .2em;}
+	.player-name {font-size: .62rem;}
+	.player-no {font-size: .58rem; letter-spacing: 0;}
+	.admin-card {padding: 1rem; gap: .9rem;}
+}
+
+/* キャッチフレーズ末尾の伸ばし線：文字ではなく1本の線として描く（長さは width、太さは height で調整） */
+.hero-dash {display: inline-block; width: 2.6em; height: .07em; margin-left: .12em; background: currentColor; vertical-align: .33em;}
+
+/* キャッチフレーズの文字組み
+   1行目「雲外蒼天。」：横幅を90%に詰め、「雲」は100%、「外蒼天。」は90%の大きさ
+   2行目「希望はその先に」：75%の大きさ、「希望」だけ大きめ */
+.catch-main {display: block; font-size: .9em; transform: scaleX(.9); transform-origin: left center;}
+.catch-lg {font-size: 1.111em;}                 /* 0.9 × 1.111 ＝ 100% */
+.catch-sub {display: block; margin-top: .15em; font-size: .75em;}
+.catch-em {font-size: 1.25em;}                  /* 「希望」の大きさ（2行目に対する倍率） */

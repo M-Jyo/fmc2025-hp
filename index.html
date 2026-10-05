@@ -11,14 +11,14 @@
 <body>
 
 <header class="site-header wrap">
-<a href="index.html"><img src="images/fmc-logo.png" alt=""><span>SASUKE for Minecraft<small>null</small></span></a>
+<a href="index.html"><img src="images/fmc-logo.png" alt=""><span>SASUKE for Minecraft</span></a>
 </header>
 
-<!-- スライドショー：images フォルダ直下の画像（js/hero-images.js の一覧）をファイル名順で表示する -->
+<!-- スライドショー：images/top フォルダの画像（js/hero-images.js の一覧）をファイル名順で表示する -->
 <div class="hero">
 <div class="hero-copy">
 <p>SASUKE for Minecraft</p>
-<h1>キャッチな<br>フレーズ。</h1>
+<h1><span class="catch-main"><span class="catch-lg">雲</span>外蒼天。</span><span class="catch-sub"><span class="catch-em">希望</span>はその先に<span class="hero-dash" aria-hidden="true"></span></span></h1> 
 </div>
 <div class="hero-dots"></div>
 </div>
@@ -34,9 +34,10 @@
 </ul>
 </li>
 <li><a href="#schedule">開催日程</a></li>
-<li><a class="external" href="results.html">予選会結果</a></li>
+<li><a href="admins.html">制作チーム紹介</a></li>
 <li><a href="#contact">お問い合わせ</a></li>
-<li><a href="#credits">クレジット＆免責事項</a></li>
+<li><a href="#credits">クレジット</a></li>
+<li><a class="external" href="results.html">予選会結果</a></li>
 </ul>
 </nav>
 
@@ -59,9 +60,9 @@
 <!-- 企画概要の項目：以下の文章はサンプル。内容が決まったら書き換える -->
 <div class="about-items">
 <div class="about-item wide" id="yosen">
-<h3>予選会</h3>
+<h3>◆ 予選会</h3>
 <p>本選の出場枠は50枠です。前回大会で 1st STAGE をクリアした7名はシードとして本選出場が決まっているため、残る43枠を予選会で争います。</p>
-<p>予選会は3種目で行い、種目ごとの順位に応じてポイントが付きます。順位の数字がそのままポイントになり（1位は1ポイント）、3種目の合計が小さい選手ほど上位となります。各種目は2回まで挑戦でき、良いほうの結果が記録になります。種目間に優劣はなく、出場者は記録のみで決まります。</p>
+<p>予選会は3種目で行い、種目ごとの順位に応じてポイントが付きます。順位の数字がそのままポイントになり（1位は1ポイント）、3種目の合計が小さい選手ほど上位となります。各種目は2回まで挑戦でき、より良いほうの結果が記録になります。種目間に優劣はなく、出場者は記録のみで決まります。</p>
 <ol class="event-list">
 <li>
 <div class="event-media">
@@ -99,8 +100,8 @@
 </ol>
 </div>
 <div class="about-item" id="honsen">
-<h3>本選</h3>
-<p>（サンプル）本選では、予選会を通過した選手が 1st・2nd・3rd の各ステージに挑戦します。ステージごとに並ぶエリアを順に突破し、完全制覇を目指します。</p>
+<h3>◆ 本選</h3>
+<p>本選では、予選会を通過した選手が4つのステージに挑戦します。ステージごとに設置されたエリアを突破し、完全制覇を目指します。</p>
 <p class="stage-guide">ステージを選ぶと、各エリアの紹介を見ることができます。</p>
 <div id="stage-list" class="stage-list" data-link-base="areas.html"></div>
 </div>
@@ -113,10 +114,10 @@
 <p class="section-label">SCHEDULE</p>
 <h2>開催期間</h2>
 <table class="info">
-<tr><th>開催期間</th><td>調整中</td></tr>
-<tr><th>予選会</th><td>調整中</td></tr>
-<tr><th>対応環境</th><td>Minecraft Bedrock Edition</td></tr>
+<tr><th>予選</th><td>2026.9.11 18:00～2026.10.04 23:59</td></tr>
+<tr><th>本選</th><td>2026.10.11～2026.10.12</td></tr>
 </table>
+<p class="info-note">※予選の開始日時は、募集ポストを投稿した日時です。</p>
 </div>
 </section>
 
@@ -144,14 +145,8 @@
 <h2>クレジット</h2>
 
 <h3 class="sub-head">◆ 制作スタッフ</h3>
-<!-- 役割と名前は仮。決まったら書き換える・行を増やす -->
-<table class="info">
-<tr><th>広報・クリエイティブ</th><td>Asz</td></tr>
-<tr><th>アドオン・モデリング・システム開発</th><td>ゴストノ，Roto，かな</td></tr>
-<tr><th>アドオン・モデリング・システム開発</th><td>ゴストノ，Roto，かな</td></tr>
-<tr><th>アドオン・モデリング・システム開発</th><td>ゴストノ，Roto，かな</td></tr>
-
-</table>
+<p>制作に携わったメンバーは、制作チーム紹介のページに掲載しています。</p>
+<a class="button sub" href="admins.html">制作チーム紹介を見る</a>
 
 <h3 class="sub-head">◆ アドオンなど</h3>
 <!-- 行を増やすときは <tr>…</tr> を1行コピーして書き換える -->
@@ -190,7 +185,7 @@
 
 </main>
 
-<footer class="site-footer wrap"><p>SASUKE for Minecraft 2026</p></footer>
+<footer class="site-footer wrap"><p>SASUKE for Minecraft 2025</p></footer>
 
 <script src="js/flags.js"></script>
 <script src="js/hero-images.js"></script>

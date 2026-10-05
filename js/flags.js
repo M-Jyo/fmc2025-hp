@@ -6,7 +6,7 @@
      false : タブ・ボタンが灰色の「COMING SOON」になり押せない。
              結果ページを直接開いても一覧は表示しない。
    ============================================================ */
-var RESULTS_OPEN = false;
+var RESULTS_OPEN = true;
 
 (function () {
   if (RESULTS_OPEN) return;

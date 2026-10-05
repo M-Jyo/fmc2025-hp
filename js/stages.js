@@ -7,7 +7,7 @@
    ============================================================ */
 var STAGES = [
   {
-    id: '1st', no: '　', name: '1st STAGE', open: true,
+    id: '1st', no: '　', name: '1st STAGE', open: false,
     preview: 'images/yosen_ss/sptn_00.jpeg',
     areas: [
       { 
@@ -149,7 +149,7 @@ var STAGES = [
     }
     var img = el('img'); img.src = s.preview; img.alt = ''; img.loading = 'lazy';
     bar.appendChild(img);
-    bar.appendChild(el('span', '', s.no));
+    if (s.no && s.no.replace(/[\s\u3000]/g, '')) bar.appendChild(el('span', '', s.no));  // 番号が空なら表示しない
     bar.appendChild(el('h3', '', s.name));
     if (!s.open) bar.appendChild(el('em', 'stage-lock', 'COMING SOON'));
     list.appendChild(bar);
