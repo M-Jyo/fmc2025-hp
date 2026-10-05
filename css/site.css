@@ -293,3 +293,61 @@ a:focus-visible, .player-card:focus-visible {outline: 3px solid var(--sub); outl
 /* 結果一覧：スクロールに合わせて1人ずつ表示（js/results.js が reveal-on / is-shown を付ける） */
 .player-grid.reveal-on .player-card {opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease;}
 .player-grid.reveal-on .player-card.is-shown {opacity: 1; transform: none;}
+
+/* ============================================================
+   小さい文字の読みやすさの調整（大きさ・配置は変えず、太さと濃さだけ上げる）
+   ============================================================ */
+:root {--muted: #47505b;}                       /* 灰色の文字を少し濃く（元は #5b6470） */
+body {font-weight: 500;}                        /* 本文を一段階だけ太く（Windows の游ゴシックが細く見えるのを防ぐ） */
+/* 注釈・番号・肩書きなどの小さい文字 */
+.info-note, .video-note, .notes, .player-no, .score-title, .site-header small,
+.area-empty, .admin-text, .pack-table td, .stage-lock, .lock-note {font-weight: 600;}
+.info-note, .video-note {color: var(--muted);}
+/* 画像の上に重なる文字：太さと影で背景から浮かせる */
+.player-text {font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,.9), 0 0 4px rgba(0,0,0,.6);}
+.player-name {text-shadow: 0 1px 3px rgba(0,0,0,.9);}
+.player-caption {background: linear-gradient(0deg, rgba(0,0,0,.9), rgba(0,0,0,.55) 55%, rgba(0,0,0,0));}
+.hero-copy p {text-shadow: 0 1px 4px rgba(0,0,0,.8);}
+/* 白地の上の小さい表示 */
+.site-footer {font-weight: 600;}
+.jump .sub a, .jump a {font-weight: 700;}
+.score-list li, .score-area {font-weight: 600;}
+
+/* 選手の肩書き：黄色系（画像上は明るめの山吹色、白地のパネル内は読める濃さの黄土色） */
+.player-text {color: #ffd866;}
+.score-title {color: #8a6400;}
+
+/* 結果一覧の選手名：これまでの120%（左寄せはそのまま） */
+.player-name {font-size: clamp(.74rem, 1.8vw, 1.26rem); text-align: left;}
+@media screen and (max-width: 700px) {.player-name {font-size: .74rem;}}
+
+/* 制作チーム紹介：左列＝赤（広報・造形など）／右列＝青（アドオン・システムなど） */
+.admin-heading {margin: 2.2rem 0 1.2rem; text-align: center; font-size: 1.3rem;}
+.admin-groups {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; align-items: start; margin-bottom: 1rem;}
+.admin-group .admin-list {grid-template-columns: 1fr; margin: 1rem 0 0;}
+.admin-group-label {margin: 0; padding: .6rem 1rem; color: #fff; text-align: center; font-weight: 800; letter-spacing: .08em;}
+.admin-group.is-red .admin-group-label, .admin-group.is-red .admin-photo {background: var(--main);}
+.admin-group.is-blue .admin-group-label, .admin-group.is-blue .admin-photo {background: var(--sub);}
+.admin-group.is-red .admin-card {border-top-color: var(--main);}
+.admin-group.is-blue .admin-card {border-top-color: var(--sub);}
+.admin-group.is-red .admin-text {color: var(--main);}
+.admin-group.is-blue .admin-text {color: var(--sub);}
+.admin-group .admin-text {font-size: .85rem; font-weight: 700; line-height: 1.6;}
+.admin-group .admin-body h3 {margin: 0 0 .35rem;}
+@media screen and (max-width: 800px) {.admin-groups {grid-template-columns: 1fr; gap: 2rem;}}
+
+/* お問い合わせ欄：公式アカウントの埋め込み（左＝赤 YouTube／右＝青 X） */
+.sns-grid {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; align-items: start; margin-top: 1.8rem;}
+.sns-card {background: var(--bg); border: 1px solid var(--line);}
+.sns-head {margin: 0; padding: .6rem 1rem; color: #fff; text-align: center; font-size: 1.05rem; font-weight: 800; letter-spacing: .08em;}
+.sns-card.is-red .sns-head {background: var(--main);}
+.sns-card.is-blue .sns-head {background: var(--sub);}
+.sns-card.is-red {border-top: 0; border-bottom: 4px solid var(--main);}
+.sns-card.is-blue {border-top: 0; border-bottom: 4px solid var(--sub);}
+.sns-embed {position: relative; margin: 1rem; min-height: 200px;}
+.sns-youtube {aspect-ratio: 16 / 9; min-height: 0; background: #000;}
+.sns-youtube iframe {position: absolute; inset: 0; width: 100%; height: 100%; border: 0;}
+.sns-x {max-height: 360px; overflow: auto;}
+.sns-embed.is-empty {display: grid; place-items: center; aspect-ratio: 16 / 9; min-height: 0; background: var(--soft); color: var(--muted); font-size: .85rem; font-weight: 600;}
+.sns-card .sns-link {display: block; margin: 0 1rem 1rem; text-align: center;}
+@media screen and (max-width: 800px) {.sns-grid {grid-template-columns: 1fr;}}

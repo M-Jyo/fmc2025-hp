@@ -36,3 +36,52 @@
   }
   go(0); start();
 })();
+
+/* お問い合わせ欄：公式アカウント（YouTube・X）の埋め込み */
+(function () {
+  var yt = document.querySelector('[data-youtube-channel-id]');
+  if (yt) {
+    var cid = (yt.getAttribute('data-youtube-channel-id') || '').trim();
+    var box = yt.querySelector('.sns-embed'), link = yt.querySelector('.sns-link');
+    if (/^UC[\w-]{10,}$/.test(cid)) {
+      // チャンネルの投稿動画一覧（アップロード再生リスト）を埋め込む
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/videoseries?list=UU' + cid.slice(2);
+      f.title = 'YouTubeチャンネルの動画';
+      f.loading = 'lazy';
+      f.referrerPolicy = 'strict-origin-when-cross-origin';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      f.allowFullscreen = true;
+      box.appendChild(f);
+      link.href = 'https://www.youtube.com/channel/' + cid;
+    } else {
+      box.textContent = '（チャンネルを記載予定）';
+      box.classList.add('is-empty');
+      link.style.display = 'none';
+    }
+  }
+  var x = document.querySelector('[data-x-id]');
+  if (x) {
+    var id = (x.getAttribute('data-x-id') || '').trim().replace(/^@/, '');
+    var xbox = x.querySelector('.sns-embed'), xlink = x.querySelector('.sns-link');
+    if (/^\w{1,15}$/.test(id)) {
+      // Xのタイムラインを埋め込む（表示できない環境では下のボタンから開ける）
+      var a = document.createElement('a');
+      a.className = 'twitter-timeline';
+      a.href = 'https://twitter.com/' + id;
+      a.setAttribute('data-height', '360');
+      a.setAttribute('data-chrome', 'noheader nofooter');
+      a.textContent = '@' + id + ' のポスト';
+      xbox.appendChild(a);
+      var sc = document.createElement('script');
+      sc.async = true; sc.src = 'https://platform.twitter.com/widgets.js'; sc.charset = 'utf-8';
+      document.body.appendChild(sc);
+      xlink.href = 'https://x.com/' + id;
+      xlink.textContent = '@' + id + ' を開く';
+    } else {
+      xbox.textContent = '（アカウントを記載予定）';
+      xbox.classList.add('is-empty');
+      xlink.style.display = 'none';
+    }
+  }
+})();
