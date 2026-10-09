@@ -3,7 +3,8 @@
    ------------------------------------------------------------
    open: true  … 公開（クリックでエリア紹介を閲覧できる）
    open: false … 非公開（画像を暗くし COMING SOON 表示、閲覧不可）
-   エリアを追加するときは areas に { name, en, image, text } を足す。
+   エリアを追加するときは areas に { name, en, image または images, text } を足す。
+   ステージには text（説明文）と video（動画のURL）も書ける（詳しくは下の描画部分のコメント）。
    ============================================================ */
 var STAGES = [
   {
@@ -158,10 +159,33 @@ var STAGES = [
   if (!detail) return;
 
   // エリア紹介の描画（areas.html のみ）
+  // ステージごとの設定で使う項目（STAGES の各ステージに書く）
+  //   text  : ステージの説明文（「文章で見る」の位置に表示）
+  //   video : 動画のURL（「動画で見る」で開く。空なら「準備中」）
+  // エリアごとの設定で使う項目
+  //   images: プレビュー画像の配列（例：['images/honsen_ss/a_00.jpeg', 'images/honsen_ss/a_01.jpeg']）
+  //           書いていないときは image を1枚だけ表示する
+  //   text  : エリアの説明（空なら表示しない）
+  function circled(n) { return n <= 20 ? String.fromCharCode(0x245F + n) : '(' + n + ')'; }
+  function has(v) { return v != null && String(v).replace(/[\s　]/g, '') !== '' && !/is null\.?$/.test(String(v).trim()); }
+
+  function pagerItem(s, dir) {
+    if (!s) return el('span', 'pager-blank');                       // 前後のステージが無い側は空白
+    var label = dir === 'prev' ? '← ' + s.name + 'へ' : s.name + 'へ →';
+    if (!s.open) {
+      var d = el('span', 'pager-link is-locked', label);
+      d.appendChild(el('small', 'lock-note', 'COMING SOON'));
+      return d;
+    }
+    var a = el('a', 'pager-link pager-' + dir, label);
+    a.href = '#' + s.id;
+    return a;
+  }
+
   function show() {
     var id = location.hash.replace('#', '');
-    var stage = null;
-    STAGES.forEach(function (s) { if (s.id === id) stage = s; });
+    var stage = null, idx = -1;
+    STAGES.forEach(function (s, k) { if (s.id === id) { stage = s; idx = k; } });
     detail.innerHTML = '';
     Array.prototype.forEach.call(list.children, function (b) {
       b.classList.toggle('is-current', !!stage && stage.open && b.getAttribute('data-stage') === id);
@@ -172,19 +196,60 @@ var STAGES = [
       return;
     }
     detail.appendChild(el('h2', 'area-stage-title', stage.name));
+
+    // ◆文章で見る／◆動画で見る
+    var modes = el('div', 'area-modes');
+    var textBtn = el('button', 'area-mode is-red', '◆ 文章で見る');
+    textBtn.type = 'button';
+    textBtn.addEventListener('click', function () { textBox.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+    modes.appendChild(textBtn);
+    if (has(stage.video)) {
+      var v = el('a', 'area-mode is-blue', '◆ 動画で見る');
+      v.href = stage.video; v.target = '_blank'; v.rel = 'noopener';
+      modes.appendChild(v);
+    } else {
+      var vd = el('span', 'area-mode is-blue is-locked', '◆ 動画で見る');
+      vd.appendChild(el('small', 'lock-note', '準備中'));
+      modes.appendChild(vd);
+    }
+    detail.appendChild(modes);
+
+    // ステージの説明文
+    var textBox = el('div', 'area-intro');
+    textBox.appendChild(el('p', '', has(stage.text) ? stage.text : '（' + stage.name + ' の説明文を記載予定）'));
+    detail.appendChild(textBox);
+
+    // ①②③… エリア名＋プレビュー画像数枚
     if (!stage.areas.length) detail.appendChild(el('p', 'area-empty', 'エリア情報は準備中です。'));
+    var ol = el('ol', 'area-list');
     stage.areas.forEach(function (a, i) {
-      var card = el('article', 'area-card');
-      var fig = el('figure');
-      var img = el('img'); img.src = a.image; img.alt = a.name; img.loading = 'lazy';
-      fig.appendChild(img);
-      var body = el('div', 'area-body');
-      body.appendChild(el('p', 'section-label', 'AREA ' + ('0' + (i + 1)).slice(-2) + ' / ' + a.en));
-      body.appendChild(el('h3', '', a.name));
-      body.appendChild(el('p', '', a.text));
-      card.appendChild(fig); card.appendChild(body);
-      detail.appendChild(card);
+      var li = el('li', 'area-item');
+      var head = el('h3', 'area-item-head');
+      head.appendChild(el('span', 'area-no', circled(i + 1)));
+      head.appendChild(document.createTextNode(a.name));
+      li.appendChild(head);
+      if (has(a.text)) li.appendChild(el('p', 'area-item-text', a.text));
+      var imgs = (a.images && a.images.length) ? a.images : (a.image ? [a.image] : []);
+      var gal = el('div', 'area-gallery count-' + Math.min(imgs.length, 3));
+      imgs.forEach(function (src, k) {
+        var im = el('img'); im.src = src; im.alt = a.name + ' プレビュー' + (k + 1); im.loading = 'lazy';
+        gal.appendChild(im);
+      });
+      if (imgs.length) li.appendChild(gal);
+      ol.appendChild(li);
     });
+    detail.appendChild(ol);
+
+    // 最下部：← 前のステージへ　トップへ　次のステージへ →
+    var pager = el('nav', 'stage-pager');
+    pager.setAttribute('aria-label', 'ステージの移動');
+    pager.appendChild(pagerItem(STAGES[idx - 1], 'prev'));
+    var top = el('a', 'pager-link pager-top', 'トップへ');
+    top.href = 'index.html#honsen';
+    pager.appendChild(top);
+    pager.appendChild(pagerItem(STAGES[idx + 1], 'next'));
+    detail.appendChild(pager);
+
     detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   window.addEventListener('hashchange', show);
