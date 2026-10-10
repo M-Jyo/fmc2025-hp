@@ -2,8 +2,8 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>エリア紹介 | SASUKE for Minecraft</title>
-<meta name="description" content="SASUKE for Minecraftのエリアを紹介します。">
+<title>本選結果 | SASUKE for Minecraft</title>
+<meta name="description" content="SASUKE for Minecraft 本選の結果を掲載します。">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="images/fmc-logo.png">
 <link rel="stylesheet" href="css/site.css">
@@ -40,12 +40,13 @@
 <main>
 <section class="section wrap">
 <div class="inner">
-<p class="section-label">STAGES</p>
-<h2>エリア紹介</h2>
-<p style="margin-bottom:2rem">ステージを選ぶと、各エリアの紹介を見ることができます。</p>
-<div id="stage-list" class="stage-list"></div>
-<div id="area-detail" aria-live="polite"></div>
-<a class="button sub" href="index.html#honsen">トップページへ戻る</a>
+<p class="section-label">RESULTS</p>
+<h2>本選結果</h2>
+<h3 class="sub-head honsen-heading">◆ 本選結果</h3>
+<div id="honsen-days" class="honsen-days" role="group" aria-label="表示する日"></div>
+<p id="honsen-subheading" class="honsen-subheading">2nd STAGE 進出者（Day 1）</p>
+<ol id="honsen-list" class="honsen-list"></ol>
+<a class="button sub" href="index.html">トップページへ戻る</a>
 </div>
 </section>
 </main>
@@ -53,6 +54,9 @@
 <footer class="site-footer wrap"><p>SASUKE for Minecraft 2025</p></footer>
 
 <script src="js/flags.js"></script>
+<script src="js/players-data.js"></script>
 <script src="js/stages.js"></script>
+<script src="js/honsen-data.js"></script>
+<script src="js/honsen.js"></script>
 </body>
 </html>

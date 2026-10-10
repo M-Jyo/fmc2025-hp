@@ -395,3 +395,39 @@ a.pager-top:hover, a.pager-top:focus-visible {background: var(--main); color: #f
 @media screen and (max-width: 700px) {.area-gallery, .area-gallery.count-1, .area-gallery.count-2, .area-gallery.count-3 {grid-template-columns: repeat(2, minmax(0, 1fr));}}
 /* ステージを表示しているときは、最下部の「トップへ」と重なるので下の戻るボタンを隠す */
 #area-detail:has(.stage-pager) + .button {display: none;}
+
+/* タブ「大会結果」のプルダウン：右端にあるので右揃えで開く */
+.jump li.has-sub.is-last .sub {left: auto; right: 0;}
+
+/* 本選結果（honsen.html）：1列で縦に並べ、左に選手画像・右に結果 */
+.honsen-list {list-style: none; margin: 2rem 0 1rem; padding: 0; border-top: 2px solid var(--text);}
+.honsen-row {display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 1.4rem; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--line);}
+.honsen-photo {display: block; width: 140px; aspect-ratio: 1 / 1; object-fit: cover; background: var(--soft); border-bottom: 3px solid var(--main);}
+.honsen-body {display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.2rem; align-items: center;}
+.honsen-no {margin: 0 !important; color: var(--muted); font-size: .8rem; font-weight: 700; letter-spacing: .08em;}
+.honsen-title {margin: .1rem 0 0 !important; color: #8a6400; font-size: .85rem; font-weight: 700; line-height: 1.5;}
+.honsen-name {margin: .1rem 0 0; font-size: clamp(1.2rem, 2.4vw, 1.6rem); line-height: 1.35;}
+.honsen-result {padding: .8rem 1rem; border-left: 5px solid var(--sub); background: var(--soft);}
+.honsen-result-main {margin: 0 !important; color: var(--sub); font-size: 1.05rem; font-weight: 800; line-height: 1.5;}
+.honsen-result-detail {margin: .2rem 0 0 !important; font-size: .88rem; font-weight: 600;}
+.honsen-result.is-pending {border-left-color: #9aa3ad;}
+.honsen-result.is-pending .honsen-result-main {color: #6b7480; font-weight: 700;}
+@media screen and (max-width: 700px) {
+	.honsen-row {grid-template-columns: 96px minmax(0, 1fr); gap: .9rem;}
+	.honsen-photo {width: 96px;}
+	.honsen-body {grid-template-columns: 1fr; gap: .5rem;}
+	.honsen-result {padding: .5rem .7rem;}
+}
+.honsen-empty {padding: 2.5rem 1rem; color: var(--muted); text-align: center; font-weight: 700;}
+.honsen-heading {margin-bottom: .2rem;}
+.honsen-subheading {margin: 0 !important; padding-left: .7rem; border-left: 4px solid var(--main); font-size: 1.15rem; font-weight: 800;}
+
+/* 本選結果：Day 切り替えボタン */
+.honsen-days {display: flex; gap: .6rem; margin: 1rem 0 1.2rem;}
+.honsen-day {display: inline-flex; flex-direction: column; align-items: center; min-width: 7.5rem; padding: .6rem 1.2rem; border: 2px solid var(--sub); background: var(--bg); color: var(--sub); font: inherit; font-weight: 800; letter-spacing: .06em; cursor: pointer; transition: background .2s, color .2s;}
+.honsen-day:hover, .honsen-day:focus-visible {background: var(--soft);}
+.honsen-day.is-active {background: var(--sub); color: #fff;}
+.honsen-result-time {margin: .15rem 0 0 !important; font-size: .95rem; font-weight: 800;}
+.honsen-tries {margin-top: .25rem;}
+.honsen-tries .honsen-result-detail {margin: 0 !important; line-height: 1.6;}
+.honsen-result-detail.is-none {color: var(--muted);}

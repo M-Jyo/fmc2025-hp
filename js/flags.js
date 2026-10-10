@@ -11,13 +11,13 @@ var RESULTS_OPEN = true;
 (function () {
   if (RESULTS_OPEN) return;
   // 結果ページへのリンク（タブ・ボタン）を無効化する
-  var links = document.querySelectorAll('a[href$="results.html"]');
+  var links = document.querySelectorAll('a[href$="results.html"]');  // タブの「大会結果」「予選」とメインページのボタン
   for (var i = 0; i < links.length; i++) {
     var a = links[i];
     a.removeAttribute('href');
     a.setAttribute('aria-disabled', 'true');
     a.classList.add('is-locked');
-    a.textContent = a.getAttribute('data-label') || '予選会結果';
+    a.textContent = a.getAttribute('data-label') || a.textContent;
     var note = document.createElement('small');   // 名称の下の行に小さく表示
     note.className = 'lock-note';
     note.textContent = 'COMING SOON';
