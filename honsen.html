@@ -42,10 +42,39 @@
 <div class="inner">
 <p class="section-label">RESULTS</p>
 <h2>本選結果</h2>
-<h3 class="sub-head honsen-heading">◆ 本選結果</h3>
+
+<!-- 表示の切り替え：進出者一覧（赤）／エリア通過率（青） -->
+<div class="hs-tabs" role="tablist" aria-label="本選結果の表示">
+<button type="button" class="hs-tab is-red" role="tab" id="tab-players" aria-controls="panel-players" data-panel="players">◆ 進出者一覧<small>2nd STAGE ／ 3rd STAGE ／ FINALIST</small></button>
+<button type="button" class="hs-tab is-blue" role="tab" id="tab-rates" aria-controls="panel-rates" data-panel="rates">◆ エリア通過率<small>ステージ・エリアごとの通過率</small></button>
+</div>
+
+<!-- 進出者一覧 -->
+<div class="hs-panel is-red" id="panel-players" role="tabpanel" aria-labelledby="tab-players">
+<nav class="hs-jump" aria-label="進出者一覧の項目">
+<a href="#adv-2nd">2nd STAGE 進出者</a><a href="#adv-3rd">3rd STAGE 進出者</a><a href="#adv-final">FINALIST</a>
+</nav>
+<section class="hs-block" id="adv-2nd">
+<h3 class="hs-block-head"><span>2nd STAGE 進出者</span><em class="hs-count" data-count="2nd"></em></h3>
 <div id="honsen-days" class="honsen-days" role="group" aria-label="表示する日"></div>
-<p id="honsen-subheading" class="honsen-subheading">2nd STAGE 進出者（Day 1）</p>
-<ol id="honsen-list" class="honsen-list"></ol>
+<ol class="honsen-list" data-list="2nd"></ol>
+</section>
+<section class="hs-block" id="adv-3rd">
+<h3 class="hs-block-head"><span>3rd STAGE 進出者</span><em class="hs-count" data-count="3rd"></em></h3>
+<ol class="honsen-list" data-list="3rd"></ol>
+</section>
+<section class="hs-block is-final" id="adv-final">
+<h3 class="hs-block-head"><span>FINALIST</span><em class="hs-count" data-count="final"></em></h3>
+<ol class="honsen-list" data-list="final"></ol>
+</section>
+</div>
+
+<!-- エリア通過率 -->
+<div class="hs-panel is-blue" id="panel-rates" role="tabpanel" aria-labelledby="tab-rates" hidden>
+<p class="hs-note">通過率 ＝ 通過者数 ÷ 挑戦者数（選手単位）。「全挑戦」は2回目の挑戦も含めた回数です。ステージの完走率は、最初のエリアの挑戦者数に対する最後のエリアの通過者数です。</p>
+<div id="hs-rates"></div>
+</div>
+
 <a class="button sub" href="index.html">トップページへ戻る</a>
 </div>
 </section>
@@ -55,6 +84,7 @@
 
 <script src="js/flags.js"></script>
 <script src="js/players-data.js"></script>
+<script src="js/stages-data.js"></script>
 <script src="js/stages.js"></script>
 <script src="js/honsen-data.js"></script>
 <script src="js/honsen.js"></script>

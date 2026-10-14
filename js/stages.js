@@ -126,6 +126,21 @@ var STAGES = [
   }
 ];
 
+// ---- stages.csv（js/stages-data.js）がある場合は、エリアの一覧をそちらで置き換える ----
+//   エリア名・英訳・説明・画像は stages.csv が優先。画像が無いエリアは、上に書いた画像を仮で使う。
+(function () {
+  if (typeof STAGES_DATA === 'undefined' || !STAGES_DATA) return;
+  STAGES.forEach(function (s) {
+    var d = STAGES_DATA[s.id];
+    if (!d || !d.areas || !d.areas.length) return;
+    var old = s.areas || [];
+    s.areas = d.areas.map(function (a, k) {
+      var fallback = (old[k] && (old[k].images || (old[k].image ? [old[k].image] : null))) || (s.preview ? [s.preview] : []);
+      return { name: a.name, en: a.en, text: a.text, images: (a.images && a.images.length) ? a.images : fallback };
+    });
+  });
+})();
+
 (function () {
   var list = document.getElementById('stage-list');
   if (!list) return;
@@ -227,6 +242,7 @@ var STAGES = [
       var head = el('h3', 'area-item-head');
       head.appendChild(el('span', 'area-no', circled(i + 1)));
       head.appendChild(document.createTextNode(a.name));
+      if (has(a.en)) head.appendChild(el('small', 'area-en', a.en));
       li.appendChild(head);
       if (has(a.text)) li.appendChild(el('p', 'area-item-text', a.text));
       var imgs = (a.images && a.images.length) ? a.images : (a.image ? [a.image] : []);
