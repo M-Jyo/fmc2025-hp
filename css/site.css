@@ -501,3 +501,28 @@ a.pager-top:hover, a.pager-top:focus-visible {background: var(--main); color: #f
 .admin-avatar .admin-photo {width: 100%; height: 100%; border-radius: 50%;}
 .admin-icon {position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; background: var(--bg);}
 @media screen and (max-width: 800px) {.admin-avatar {width: 72px; height: 72px;}}
+
+/* エリア紹介：動画で見る（ページ内に埋め込み） */
+.area-mode.is-active.is-red {background: var(--main); color: #fff;}
+.area-mode.is-active.is-blue {background: var(--sub); color: #fff;}
+.area-view[hidden] {display: none;}
+.area-video {margin-bottom: 2rem; scroll-margin-top: 5rem;}
+.area-video-title {margin: 0 0 .7rem !important; padding-left: .7rem; border-left: 4px solid var(--sub); font-size: 1.1rem; font-weight: 800;}
+.area-video-frame {position: relative; aspect-ratio: 16 / 9; background: #000; border-radius: var(--radius, 8px); overflow: hidden; box-shadow: 0 8px 24px rgba(16,24,40,.12);}
+.area-video-frame iframe {position: absolute; inset: 0; width: 100%; height: 100%; border: 0;}
+.area-video-link {display: inline-block; margin-top: .6rem; color: var(--muted); font-size: .8rem; font-weight: 600;}
+.area-modes {scroll-margin-top: 5rem;}
+
+/* 予選会の競技説明（stages.csv の改行を反映・続きは「詳しく見る」） */
+.event-text {white-space: pre-line;}
+.event-more {margin-top: .5rem;}
+.event-more summary {display: inline-block; color: var(--sub); font-size: .82rem; font-weight: 700; cursor: pointer; list-style: none;}
+.event-more summary::-webkit-details-marker {display: none;}
+.event-more summary::after {content: " ▼"; font-size: .7em;}
+.event-more[open] summary::after {content: " ▲";}
+.event-more .event-text {margin-top: .5rem !important; font-size: .85rem; line-height: 1.75;}
+
+/* 結果一覧：予選会結果（赤）・本選結果（青）のボタン */
+.result-links {display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.5rem;}
+.result-links .button {margin-top: 0; min-width: 13rem; text-align: center;}
+@media screen and (max-width: 500px) {.result-links .button {flex: 1 1 100%;}}

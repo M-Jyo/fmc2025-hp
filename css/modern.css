@@ -138,3 +138,125 @@ a.stage-trigger:hover::before {transform: translateX(6px);}
 	.js-anim .reveal {opacity: 1; translate: none; transition: none;}
 	* {transition-duration: .01ms !important;}
 }
+
+/* ============================================================
+   文字と余白の微調整（2026-10-19）
+   ・書体：Noto Sans JP（Google Fonts）で端末による見え方の差をなくす
+   ・余白の基準：その部分の文字サイズの約1.5倍（1.45～1.55倍）
+     行間 1.5 前後／段落・項目どうしの間隔 1.5em／上下の内側余白の合計 1.5em
+   ============================================================ */
+:root {
+	--font: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+	--gap: 1.5em;
+}
+body {font-family: var(--font); font-weight: 400; line-height: 1.55; font-feature-settings: "palt"; letter-spacing: .02em;}
+p, li, td, th, dd {line-height: 1.55; text-wrap: pretty;}
+h1, h2, h3, h4 {line-height: 1.3; text-wrap: balance;}
+
+/* セクション：上下の余白を詰める（大きすぎた分） */
+.section {padding-top: 4.5rem; padding-bottom: 4.5rem;}
+.section h2 {margin-bottom: 1.5rem;}                         /* 見出し → 本文：本文16px×1.5 */
+.section h2::after {margin-top: .5rem;}
+.section-label {margin-bottom: .5rem;}
+.section p + p {margin-top: var(--gap);}
+.lead {max-width: 60em;}                                  /* 1行に収まる短い文が途中で折り返さない幅 */
+.sub-head {margin: var(--gap) 0 .75em; font-size: 1.15rem;}
+.sub-head.first {margin-top: 0;}
+
+/* カード：内側の余白を文字サイズの1.5倍に */
+.about-items {gap: 1.5rem; margin-top: 2.25rem;}
+.about-item {padding: 1.5em;}
+.about-item h3 {margin-bottom: .75em;}
+.about-item p + p {margin-top: 1em;}
+.event-list {gap: 1.5rem; margin-top: 1.5rem;}
+.event-body {padding-top: 1.5em; padding-bottom: 1.5em; padding-right: 1.5em;}
+.event-list h4 {margin-bottom: .75em;}
+.sns-grid {gap: 1.5rem; margin-top: 1.5rem;}
+.sns-box {padding: 1.5em;}
+.sns-box p {min-height: 0; margin-bottom: 1em;}
+.admin-list {gap: 1.5rem;}
+.admin-card {padding: 1.5em; gap: 1.5em;}
+.admin-career {padding: .75em 1em;}
+.admin-career li + li {margin-top: .25em;}
+.admin-x {margin-top: .75em !important;}
+
+/* 表：上下の余白の合計を1.5emに */
+.info th, .info td {padding: .75em 1em;}
+.pack-table th, .pack-table td {padding: .75em 1em;}
+.notes li + li {margin-top: .5em;}
+.info-note, .video-note {margin-top: .75em !important; line-height: 1.5;}
+
+/* ボタン・タブ */
+.button {padding: .75em 1.5em; line-height: 1.5;}
+.result-links, .area-modes {gap: 1em;}
+.jump a {padding: .5em 1.1em; line-height: 1.5;}
+
+/* 結果・エリア紹介 */
+.honsen-row {padding: 1.5rem 0; gap: 1.5rem;}
+.honsen-result {padding: .75em 1em;}
+.area-item {margin-bottom: 2.25rem;}
+.area-item-head {margin-bottom: .75em;}
+.area-item-text {line-height: 1.6;}
+.area-intro {padding: 1.5em; margin-bottom: 2.25rem;}
+.rate-row {padding: .75em 0;}
+.hs-block {margin-bottom: 2.25rem;}
+
+@media screen and (max-width: 800px) {
+	.section {padding-top: 3rem; padding-bottom: 3rem;}
+	.about-item, .sns-box, .admin-card, .area-intro {padding: 1.25em;}
+	.event-body {padding: 1em 1.25em 1.25em;}
+}
+.area-item-text + .area-item-text, .event-more .event-text + .event-text {margin-top: .75em !important;}
+.event-more .event-text {margin-top: .75em !important;}
+
+/* ============================================================
+   制作チーム紹介：スタイリッシュな運営カード（配色・2列構成はそのまま）
+   ============================================================ */
+.admin-heading {margin: 2.25rem 0 1.5rem; font-size: 1.2rem; letter-spacing: .08em;}
+.admin-groups {gap: 2rem;}
+/* グループ見出し：英字の小見出し＋日本語 */
+.admin-group-label {display: flex; flex-direction: column; align-items: center; gap: .15em; padding: .9em 1em; border-radius: var(--radius); font-size: 1.05rem; letter-spacing: .1em; box-shadow: var(--shadow);}
+.admin-group-label small {font-size: .62rem; font-weight: 700; letter-spacing: .35em; opacity: .8;}
+.admin-group .admin-list {gap: 1.25rem; margin-top: 1.25rem;}
+/* カード：上端に色の帯、左にアイコン、右に名前・担当 */
+.admin-card {position: relative; display: grid; grid-template-columns: 76px minmax(0, 1fr); align-items: start; gap: 1.25em; padding: 1.5em; border-top: 0; border-radius: var(--radius); background: #fff; overflow: hidden;}
+.admin-card::before {content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--main);}
+.admin-group.is-blue .admin-card::before {background: var(--sub);}
+.admin-avatar {width: 76px; height: 76px; border-radius: 50%; padding: 3px; background: conic-gradient(var(--main), #ff6a73, var(--main));}
+.admin-group.is-blue .admin-avatar {background: conic-gradient(var(--sub), #5b8cff, var(--sub));}
+.admin-avatar .admin-photo, .admin-icon {inset: 3px; width: calc(100% - 6px); height: calc(100% - 6px); border: 2px solid #fff; border-radius: 50%; font-size: 1.6rem;}
+.admin-avatar .admin-photo {position: absolute;}
+.admin-body {min-width: 0;}
+.admin-body h3 {margin: .1em 0 .5em; font-size: 1.35rem; font-weight: 800; letter-spacing: .03em; line-height: 1.3; overflow-wrap: anywhere;}
+/* 担当タグ */
+.admin-tags {display: flex; flex-wrap: wrap; gap: .35em; margin: 0 0 .25em; padding: 0; list-style: none;}
+.admin-tags li {padding: .2em .65em; border-radius: 999px; background: rgba(227,6,19,.08); color: var(--main); font-size: .74rem; font-weight: 700; line-height: 1.5; white-space: nowrap;}
+.admin-group.is-blue .admin-tags li {background: rgba(21,84,209,.08); color: var(--sub);}
+.admin-tags li.is-etc {background: transparent; color: var(--muted); padding-left: .2em; padding-right: .2em;}
+/* 主な活動・経歴：カード全幅で、点で区切る一覧 */
+.admin-career {grid-column: 1 / -1; margin: .25em 0 0; padding: 1em 1.1em; border: 0; border-left: 0 !important; border-radius: var(--radius-s); background: #f6f8fb;}
+.admin-career-label {margin: 0 0 .5em !important; color: var(--muted); font-size: .66rem; letter-spacing: .25em;}
+.admin-career ul {margin: 0; padding: 0; list-style: none; font-size: .86rem; line-height: 1.55;}
+.admin-career li {position: relative; padding-left: 1.1em; overflow-wrap: anywhere;}
+.admin-career li::before {content: ""; position: absolute; left: .1em; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: var(--main);}
+.admin-group.is-blue .admin-career li::before {background: var(--sub);}
+.admin-career li + li {margin-top: .4em;}
+/* カードの中の配置：経歴は下段に全幅で置く */
+.admin-card > .admin-body {display: contents;}
+.admin-card > .admin-body > h3, .admin-card > .admin-body > .admin-tags {grid-column: 2;}
+.admin-card {row-gap: .5em;}
+.admin-card > .admin-avatar {grid-row: 1 / span 2; align-self: center;}
+.admin-card > .admin-body > h3 {grid-row: 1; align-self: end; margin: 0;}
+.admin-card > .admin-body > .admin-tags {grid-row: 2; align-self: start; margin: 0;}
+.admin-card > .admin-body > .admin-career {margin-top: .75em;}
+.admin-card > .admin-body > .admin-x {grid-column: 1 / -1;}
+/* X のリンク */
+.admin-x {margin: .25em 0 0 !important;}
+.admin-x-link {display: inline-flex; align-items: center; gap: .5em; padding: .35em .9em .35em .4em; border-radius: 999px; background: #0f1419; color: #fff; font-size: .8rem; font-weight: 700; text-decoration: none; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: transform .25s var(--ease), background .25s;}
+.admin-x-link b {display: grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; background: #fff; color: #0f1419; font-size: .8em;}
+.admin-x-link:hover, .admin-x-link:focus-visible {transform: translateY(-1px); background: #2b3138; color: #fff;}
+@media screen and (max-width: 800px) {
+	.admin-card {grid-template-columns: 64px minmax(0, 1fr); padding: 1.25em;}
+	.admin-avatar {width: 64px; height: 64px;}
+}
+.admin-tags-etc {margin-left: .45em; font-weight: 500; opacity: .7;}

@@ -9,6 +9,7 @@
 var STAGES = [
   {
     id: '1st', no: '　', name: '1st STAGE', open: false,
+    video: 'https://youtu.be/L5I4XGcs2TE',   // 1st STAGE 説明動画
     preview: 'images/yosen_ss/sptn_00.jpeg',
     areas: [
       { 
@@ -55,6 +56,7 @@ var STAGES = [
   },
   { 
     id: '2nd', no: '　', name: '2nd STAGE', open: false, 
+    video: 'https://youtu.be/jCqKj7fIjlA',   // 2nd STAGE 説明動画
     preview: 'images/yosen_ss/enls_00.jpeg', 
     areas: [
       { 
@@ -90,6 +92,7 @@ var STAGES = [
     ] 
   },
   { id: '3rd', no: '　', name: '3rd STAGE', open: false, 
+    video: 'https://youtu.be/LDsXLXVD4iE',   // 3rd STAGE 説明動画
     preview: 'images/yosen_ss/rpcb_00.jpeg', 
     areas: [
       { 
@@ -176,11 +179,15 @@ var STAGES = [
   // エリア紹介の描画（areas.html のみ）
   // ステージごとの設定で使う項目（STAGES の各ステージに書く）
   //   text  : ステージの説明文（「文章で見る」の位置に表示）
-  //   video : 動画のURL（「動画で見る」で開く。空なら「準備中」）
+  //   video : YouTube の動画URL（「動画で見る」を押すとページ内に埋め込んで再生。空なら「準備中」）
   // エリアごとの設定で使う項目
   //   images: プレビュー画像の配列（例：['images/honsen_ss/a_00.jpeg', 'images/honsen_ss/a_01.jpeg']）
   //           書いていないときは image を1枚だけ表示する
   //   text  : エリアの説明（空なら表示しない）
+  function youtubeId(url) {                          // youtu.be/ID・watch?v=ID・embed/ID に対応
+    var m = String(url || '').match(/(?:youtu\.be\/|[?&]v=|embed\/)([\w-]{11})/);
+    return m ? m[1] : '';
+  }
   function circled(n) { return n <= 20 ? String.fromCharCode(0x245F + n) : '(' + n + ')'; }
   function has(v) { return v != null && String(v).replace(/[\s　]/g, '') !== '' && !/is null\.?$/.test(String(v).trim()); }
 
@@ -212,16 +219,16 @@ var STAGES = [
     }
     detail.appendChild(el('h2', 'area-stage-title', stage.name));
 
-    // ◆文章で見る／◆動画で見る
+    // ◆文章で見る／◆動画で見る（ボタンで表示を切り替える）
     var modes = el('div', 'area-modes');
-    var textBtn = el('button', 'area-mode is-red', '◆ 文章で見る');
+    var textBtn = el('button', 'area-mode is-red is-active', '◆ 文章で見る');
     textBtn.type = 'button';
-    textBtn.addEventListener('click', function () { textBox.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
     modes.appendChild(textBtn);
-    if (has(stage.video)) {
-      var v = el('a', 'area-mode is-blue', '◆ 動画で見る');
-      v.href = stage.video; v.target = '_blank'; v.rel = 'noopener';
-      modes.appendChild(v);
+    var vid = youtubeId(stage.video), videoBtn;
+    if (vid) {
+      videoBtn = el('button', 'area-mode is-blue', '◆ 動画で見る');
+      videoBtn.type = 'button';
+      modes.appendChild(videoBtn);
     } else {
       var vd = el('span', 'area-mode is-blue is-locked', '◆ 動画で見る');
       vd.appendChild(el('small', 'lock-note', '準備中'));
@@ -229,13 +236,43 @@ var STAGES = [
     }
     detail.appendChild(modes);
 
+    var textView = el('div', 'area-view');
+    var videoView = el('div', 'area-view area-video');
+    videoView.hidden = true;
+    detail.appendChild(textView);
+    detail.appendChild(videoView);
+    function setMode(mode) {
+      var isVideo = mode === 'video';
+      textView.hidden = isVideo; videoView.hidden = !isVideo;
+      textBtn.classList.toggle('is-active', !isVideo);
+      if (videoBtn) videoBtn.classList.toggle('is-active', isVideo);
+      if (isVideo && !videoView.firstChild) {           // 動画は最初に開いたときに読み込む
+        videoView.appendChild(el('p', 'area-video-title', stage.name + ' 説明動画'));
+        var frame = el('div', 'area-video-frame');
+        var f = document.createElement('iframe');
+        f.src = 'https://www.youtube-nocookie.com/embed/' + vid;
+        f.title = stage.name + ' 説明動画';
+        f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        f.referrerPolicy = 'strict-origin-when-cross-origin';
+        f.allowFullscreen = true;
+        frame.appendChild(f);
+        videoView.appendChild(frame);
+        var link = el('a', 'area-video-link', '動画が表示されない場合は YouTube で開く');
+        link.href = 'https://youtu.be/' + vid; link.target = '_blank'; link.rel = 'noopener';
+        videoView.appendChild(link);
+      }
+      modes.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    textBtn.addEventListener('click', function () { setMode('text'); });
+    if (videoBtn) videoBtn.addEventListener('click', function () { setMode('video'); });
+
     // ステージの説明文
     var textBox = el('div', 'area-intro');
     textBox.appendChild(el('p', '', has(stage.text) ? stage.text : '（' + stage.name + ' の説明文を記載予定）'));
-    detail.appendChild(textBox);
+    textView.appendChild(textBox);
 
     // ①②③… エリア名＋プレビュー画像数枚
-    if (!stage.areas.length) detail.appendChild(el('p', 'area-empty', 'エリア情報は準備中です。'));
+    if (!stage.areas.length) textView.appendChild(el('p', 'area-empty', 'エリア情報は準備中です。'));
     var ol = el('ol', 'area-list');
     stage.areas.forEach(function (a, i) {
       var li = el('li', 'area-item');
@@ -244,7 +281,11 @@ var STAGES = [
       head.appendChild(document.createTextNode(a.name));
       if (has(a.en)) head.appendChild(el('small', 'area-en', a.en));
       li.appendChild(head);
-      if (has(a.text)) li.appendChild(el('p', 'area-item-text', a.text));
+      if (has(a.text)) {                       // 空行で段落に分ける（段落の間は余白で区切る）
+        String(a.text).replace(/\r/g, '').split(/\n\s*\n/).forEach(function (para) {
+          if (para.trim()) li.appendChild(el('p', 'area-item-text', para.trim()));
+        });
+      }
       var imgs = (a.images && a.images.length) ? a.images : (a.image ? [a.image] : []);
       var gal = el('div', 'area-gallery count-' + Math.min(imgs.length, 3));
       imgs.forEach(function (src, k) {
@@ -254,7 +295,7 @@ var STAGES = [
       if (imgs.length) li.appendChild(gal);
       ol.appendChild(li);
     });
-    detail.appendChild(ol);
+    textView.appendChild(ol);
 
     // 最下部：← 前のステージへ　トップへ　次のステージへ →
     var pager = el('nav', 'stage-pager');
