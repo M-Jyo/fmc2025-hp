@@ -1,0 +1,140 @@
+@charset "utf-8";
+/* ============================================================
+   SASUKE for Minecraft — 現代風レイアウトの上書きスタイル
+   （site.css の後に読み込む。このファイルの読み込みを外せば元の見た目に戻る）
+   色：赤（--main）・青（--sub）・白（--bg）はそのまま使う
+   ============================================================ */
+:root {
+	--radius: 14px;
+	--radius-s: 8px;
+	--shadow: 0 1px 2px rgba(16,24,40,.06), 0 8px 24px rgba(16,24,40,.08);
+	--shadow-hover: 0 2px 4px rgba(16,24,40,.08), 0 16px 40px rgba(16,24,40,.14);
+	--ease: cubic-bezier(.2,.7,.2,1);
+	--grad: linear-gradient(90deg, var(--main), var(--sub));
+}
+html {scroll-padding-top: 5rem;}
+body {background: #fff; letter-spacing: .01em;}
+::selection {background: rgba(227,6,19,.18);}
+
+/* スクロール位置のバー（ページ最上部：赤→青） */
+.scroll-progress {position: fixed; z-index: 100; top: 0; left: 0; height: 3px; width: 100%; background: var(--grad); transform: scaleX(0); transform-origin: left; pointer-events: none;}
+
+/* ---------- ヘッダー ---------- */
+.site-header {border-top: 0; padding-top: 1rem; padding-bottom: 1rem;}
+.site-header img {transition: transform .4s var(--ease);}
+.site-header a:hover img {transform: rotate(-6deg) scale(1.05);}
+
+/* ---------- スライドショー ---------- */
+.hero {max-height: 82vh; min-height: 320px; isolation: isolate;}
+.hero img.active {animation: hero-zoom 7s ease-out both;}          /* ゆっくり寄る */
+@keyframes hero-zoom {from {transform: scale(1.12);} to {transform: scale(1);}}
+.hero::after {background: linear-gradient(180deg, rgba(0,0,0,.05) 30%, rgba(0,0,0,.75)), linear-gradient(90deg, rgba(0,0,0,.45), rgba(0,0,0,0) 60%);}
+.hero::before {content: ""; position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; height: 5px; background: var(--grad);}
+.hero-copy {bottom: 14%;}
+.hero-copy > * {opacity: 0; transform: translateY(18px); animation: rise .9s var(--ease) forwards;}
+.hero-copy > p {animation-delay: .25s;}
+.hero-copy > h1 {animation-delay: .45s; text-shadow: 0 4px 24px rgba(0,0,0,.35);}
+@keyframes rise {to {opacity: 1; transform: none;}}
+.hero-copy > p {display: inline-block; padding: .3rem .8rem; border-radius: 999px; background: rgba(255,255,255,.14); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);}
+/* 表示中の画像のバーが、切り替えまでの時間に合わせて伸びる */
+.hero-dots {bottom: 5.5%; gap: .4rem;}
+.hero-dots button {position: relative; width: 44px; height: 4px; border-radius: 4px; overflow: hidden; background: rgba(255,255,255,.35);}
+.hero-dots button.active {background: rgba(255,255,255,.35);}
+.hero-dots button.active::after {content: ""; position: absolute; inset: 0; background: #fff; transform-origin: left; animation: dot-fill 5s linear forwards;}
+@keyframes dot-fill {from {transform: scaleX(0);} to {transform: scaleX(1);}}
+
+/* ---------- 上部のタブ ---------- */
+.jump {background: rgba(255,255,255,.82); backdrop-filter: saturate(1.6) blur(12px); -webkit-backdrop-filter: saturate(1.6) blur(12px); border-bottom: 1px solid var(--line); transition: box-shadow .3s;}
+.jump.is-stuck {box-shadow: 0 6px 24px rgba(16,24,40,.08);}
+.jump ul {gap: .4rem;}
+.jump a {border-radius: 999px; border-width: 1.5px; padding: .5rem 1rem; transition: background .25s, color .25s, transform .25s var(--ease), box-shadow .25s;}
+.jump a:hover, .jump a:focus-visible {transform: translateY(-1px); box-shadow: 0 6px 16px rgba(21,84,209,.2);}
+.jump a.external {box-shadow: 0 6px 16px rgba(227,6,19,.22);}
+.jump .sub {border-radius: var(--radius-s); overflow: hidden; padding: .3rem; gap: .25rem; animation: drop .2s var(--ease);}
+.jump .sub a {border-radius: 6px;}
+@keyframes drop {from {opacity: 0; transform: translateY(-6px);} to {opacity: 1; transform: none;}}
+
+/* ---------- セクション ---------- */
+.section {padding-top: 5.5rem; padding-bottom: 5.5rem; border-bottom: 0;}
+.section.alt {background: linear-gradient(180deg, #f6f8fb, #eef2f8);}
+.section-label {display: inline-flex; align-items: center; gap: .5rem; padding: .25rem .75rem; border-radius: 999px; background: rgba(227,6,19,.08); font-size: .68rem; letter-spacing: .2em;}
+.section-label::before {content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--main);}
+.section h2 {border-left: 0; padding-left: 0; font-size: clamp(1.7rem, 3.4vw, 2.6rem); letter-spacing: .02em; margin-top: .6rem;}
+.section h2::after {content: ""; display: block; width: 56px; height: 4px; margin-top: .7rem; border-radius: 4px; background: var(--grad);}
+
+/* ---------- カード類：角丸と影 ---------- */
+.about-item, .event-list li, .sns-box, .admin-card, .rate-card, .honsen-result, .area-intro, .info-note,
+.player-photo, .stage-trigger, .area-gallery img, .area-card figure img, .pack-table, .table-scroll {border-radius: var(--radius);}
+.about-item {background: #fff; box-shadow: var(--shadow); border-top-width: 5px; transition: transform .35s var(--ease), box-shadow .35s;}
+.section.alt .about-item {background: #fff;}
+.event-list li {overflow: hidden; box-shadow: var(--shadow); border: 0; transition: transform .35s var(--ease), box-shadow .35s;}
+.event-list li:hover {transform: translateY(-4px); box-shadow: var(--shadow-hover);}
+.sns-box {box-shadow: var(--shadow); border-width: 1.5px; border-top-width: 6px; overflow: hidden;}
+.sns-media {border-radius: var(--radius-s); overflow: hidden;}
+.admin-card {background: #fff; box-shadow: var(--shadow); transition: transform .35s var(--ease), box-shadow .35s;}
+.admin-card:hover {transform: translateY(-3px); box-shadow: var(--shadow-hover);}
+.admin-group-label {border-radius: var(--radius-s);}
+.admin-career {border-radius: var(--radius-s);}
+.rate-card {overflow: hidden; box-shadow: var(--shadow); border: 0;}
+.rate-track, .rate-bar {border-radius: 999px;}
+.hs-block-head, .admin-group-label, .rate-head, .sns-head {border-radius: var(--radius-s);}
+.rate-head {border-radius: 0;}
+.hs-tab {border-radius: var(--radius) var(--radius) 0 0;}
+.honsen-row {transition: background .25s;}
+.honsen-row:hover {background: #fafbfd;}
+.honsen-photo {border-radius: var(--radius-s); border-bottom: 0; box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--main);}
+.table-scroll {box-shadow: var(--shadow);}
+.pack-table {overflow: hidden; border-collapse: separate; border-spacing: 0;}
+.info {border-collapse: separate; border-spacing: 0;}
+
+/* ステージバー */
+.stage-trigger {overflow: hidden; border-width: 0; box-shadow: var(--shadow); transition: transform .35s var(--ease), box-shadow .35s;}
+a.stage-trigger:hover {transform: translateY(-3px); box-shadow: var(--shadow-hover);}
+a.stage-trigger::before {content: "→"; position: absolute; z-index: 2; right: 1.4rem; color: #fff; font-size: 1.6rem; font-weight: 800; transition: transform .35s var(--ease);}
+a.stage-trigger:hover::before {transform: translateX(6px);}
+.stage-trigger.is-current {box-shadow: 0 0 0 3px var(--main), var(--shadow);}
+
+/* 結果一覧の選手カード */
+.player-photo {overflow: hidden;}
+.player-photo img {transition: transform .5s var(--ease);}
+.player-card:hover .player-photo img, .player-card:focus .player-photo img {transform: scale(1.06);}
+.player-score {border-radius: var(--radius-s); animation: drop .2s var(--ease);}
+
+/* ---------- ボタン ---------- */
+.button {border-radius: 999px; padding: .85rem 1.7rem; box-shadow: 0 8px 20px rgba(227,6,19,.22); transition: background .25s, transform .25s var(--ease), box-shadow .25s;}
+.button.sub {box-shadow: 0 8px 20px rgba(21,84,209,.22);}
+.button:hover, .button:focus-visible {transform: translateY(-2px);}
+.button::after {content: " →"; display: inline-block; transition: transform .25s var(--ease);}
+.button:hover::after {transform: translateX(4px);}
+.button.is-locked::after {content: none;}
+.area-mode, .pager-link, .honsen-day, .hs-jump a, .sns-link {border-radius: 999px;}
+.area-mode, .pager-link, .honsen-day {transition: background .25s, color .25s, transform .25s var(--ease);}
+.area-mode:hover, a.pager-link:hover, .honsen-day:hover {transform: translateY(-2px);}
+
+/* ---------- フッター ---------- */
+.site-footer {background: #0f1b33; padding-top: 2.2rem; padding-bottom: 2.2rem; position: relative;}
+.site-footer::before {content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--grad);}
+
+/* ページ上部へ戻るボタン */
+.to-top {position: fixed; z-index: 50; right: 1.2rem; bottom: 1.2rem; display: grid; place-items: center; width: 48px; height: 48px; border: 0; border-radius: 50%; background: var(--sub); color: #fff; font-size: 1.2rem; font-weight: 800; box-shadow: 0 8px 24px rgba(21,84,209,.35); cursor: pointer; opacity: 0; transform: translateY(16px); pointer-events: none; transition: opacity .3s, transform .3s var(--ease), background .25s;}
+.to-top.is-shown {opacity: 1; transform: none; pointer-events: auto;}
+.to-top:hover {background: var(--main);}
+
+/* ---------- スクロールで現れるアニメーション（js/modern.js が付ける） ---------- */
+/* transform ではなく translate を使い、カードのホバー時の浮き上がり（transform）とぶつからないようにする */
+.js-anim .reveal {opacity: 0; translate: 0 28px; transition: opacity .8s var(--ease), translate .8s var(--ease), transform .35s var(--ease), box-shadow .35s; transition-delay: var(--delay, 0s), var(--delay, 0s), 0s, 0s;}
+.js-anim .reveal.is-in {opacity: 1; translate: none;}
+
+@media screen and (max-width: 800px) {
+	.jump {background: #fff; backdrop-filter: none;}
+	.jump a {border-radius: 10px;}
+	.section {padding-top: 3.5rem; padding-bottom: 3.5rem;}
+	a.stage-trigger::before {right: .9rem; font-size: 1.2rem;}
+	.hero {max-height: none;}
+}
+@media (prefers-reduced-motion: reduce) {
+	.hero img.active, .hero-copy > *, .hero-dots button.active::after {animation: none; opacity: 1; transform: none;}
+	.hero-dots button.active {background: #fff;}
+	.js-anim .reveal {opacity: 1; translate: none; transition: none;}
+	* {transition-duration: .01ms !important;}
+}
