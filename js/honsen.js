@@ -94,11 +94,20 @@ var HONSEN_DAYS = [
     if (count) count.textContent = recs ? n + '名' : '発表前';
   }
   // 2nd STAGE 進出者：Day 切り替え
+  function clearCount(dayId) {                    // 1st STAGE クリア人数（dayId を省くと全日程の合計）
+    var n = 0;
+    HONSEN_DAYS.forEach(function (d) {
+      if (dayId && d.id !== dayId) return;
+      var r = D[d.id] || {};
+      for (var z in r) if (r[z] && r[z].show === true) n++;
+    });
+    return n;
+  }
   var dayBox = document.getElementById('honsen-days');
   function showDay(day) {
     fill('2nd', D[day.id], 0, day.label + ' の 2nd STAGE 進出者は発表前です。');
-    var c = $('[data-count="2nd"]');
-    if (c && D[day.id]) c.textContent = day.label + '：' + c.textContent;
+    var c = $('[data-count="2nd"]');               // 見出しには全日程の合計を表示
+    if (c) c.textContent = HONSEN_DAYS.some(function (d) { return D[d.id]; }) ? clearCount() + '名' : '発表前';
     Array.prototype.forEach.call(dayBox.children, function (b) {
       var on = b.getAttribute('data-day') === day.id;
       b.classList.toggle('is-active', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -108,7 +117,8 @@ var HONSEN_DAYS = [
     HONSEN_DAYS.forEach(function (day) {
       var b = el('button', 'honsen-day', day.label);
       b.type = 'button'; b.setAttribute('data-day', day.id);
-      if (!D[day.id]) b.appendChild(el('small', 'lock-note', '発表前'));
+      // ボタンにはその日のクリア人数を表示
+      b.appendChild(el('small', 'lock-note', D[day.id] ? clearCount(day.id) + '名' : '発表前'));
       b.addEventListener('click', function () { showDay(day); });
       dayBox.appendChild(b);
     });
@@ -117,10 +127,11 @@ var HONSEN_DAYS = [
     showDay(first);
   }
   fill('3rd', D.s2, 1, '3rd STAGE 進出者は発表前です。');
-  fill('final', D.s3, 2, 'FINALIST は発表前です。');
+  fill('final', D.s3, 2, '今大会で FINALIST は現れませんでした。');
 
   // ---------- エリア通過率 ----------
   var box = document.getElementById('hs-rates');
+  function fmt(v) { return v.toFixed(2) + '%'; }   // パーセントは小数第2位まで固定（0.00%～100.00%）
   var ANIM = [];                                   // { bar, num, to } … 伸ばすゲージと数字
   var DURATION = 1200;                             // ゲージが伸びきるまでの時間（ミリ秒）
   var animated = false;
@@ -132,7 +143,7 @@ var HONSEN_DAYS = [
       ANIM.forEach(function (a) {
         var v = a.to * t;
         a.bar.style.width = v + '%';
-        a.num.textContent = (t >= 1 ? a.to : Math.round(v * 10) / 10) + '%';
+        a.num.textContent = fmt(t >= 1 ? a.to : v);
       });
     }
     if (reduce || !window.requestAnimationFrame) { draw(1); return; }
@@ -150,7 +161,7 @@ var HONSEN_DAYS = [
     var SD = (typeof STAGES_DATA !== 'undefined' && STAGES_DATA) || {}, groups = [];
     ['1st', '2nd', '3rd', 'final'].forEach(function (k) { if (SD[k] && SD[k].areas.length) groups.push(SD[k]); });
     if (!groups.length) box.appendChild(el('p', 'honsen-empty', 'エリア通過率は発表前です。'));
-    var pct = function (a, b) { return Math.round(a / b * 1000) / 10; };
+    var pct = function (a, b) { return a / b * 100; };
     groups.forEach(function (g) {
       var card = el('section', 'rate-card');
       var head = el('h3', 'rate-head');
@@ -158,7 +169,7 @@ var HONSEN_DAYS = [
       var known = g.areas.filter(function (a) { return a.tried != null && a.passed != null; });
       var firstA = g.areas[0], lastA = g.areas[g.areas.length - 1];
       if (firstA && lastA && firstA.tried && lastA.passed != null && known.length === g.areas.length) {
-        head.appendChild(el('em', 'rate-total', '完走率 ' + pct(lastA.passed, firstA.tried) + '%（' + lastA.passed + ' / ' + firstA.tried + '）'));
+        head.appendChild(el('em', 'rate-total', '完走率 ' + fmt(pct(lastA.passed, firstA.tried)) + '（' + lastA.passed + ' / ' + firstA.tried + '）'));
       } else {
         head.appendChild(el('em', 'rate-total is-pending', '集計前'));
       }
@@ -177,13 +188,13 @@ var HONSEN_DAYS = [
         track.appendChild(bar);
         li.appendChild(track);
         var val = el('span', 'rate-value' + (ok ? '' : ' is-pending'));
-        var num = el('b', 'rate-num', ok ? '0%' : '—');
+        var num = el('b', 'rate-num', ok ? fmt(0) : '—');
         val.appendChild(num);
         if (ok) ANIM.push({ bar: bar, num: num, to: v });
         if (ok) val.appendChild(el('small', '', a.passed + ' / ' + a.tried + '人'));
         if (ok && a.triedAll) val.appendChild(el('small', 'rate-all', '全挑戦 ' + a.passedAll + ' / ' + a.triedAll + '回'));
         li.appendChild(val);
-        li.title = a.name + '：' + (ok ? '通過 ' + a.passed + '人 ／ 挑戦 ' + a.tried + '人（' + v + '%）' : '集計前');
+        li.title = a.name + '：' + (ok ? '通過 ' + a.passed + '人 ／ 挑戦 ' + a.tried + '人（' + fmt(v) + '）' : '集計前');
         ol.appendChild(li);
       });
       card.appendChild(ol);
